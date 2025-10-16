@@ -1,4 +1,9 @@
 ﻿@page "/"
+@inject NavigationManager Nav
 
-<h1>Welcome</h1>
-<p>Base Blazor shell for the team. Build here.</p>
+@code {
+    protected override void OnInitialized()
+    {
+        Nav.NavigateTo("/staff/login", true);
+    }
+}

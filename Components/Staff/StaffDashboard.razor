@@ -1,0 +1,116 @@
+@page "/staff/dashboard"
+@layout Components.Layout.StaffLoginLayout
+
+<PageTitle>Grand Hotel | Staff Dashboard</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Dashboard</h3>
+        <div>
+            <button class="btn btn-outline-secondary me-2">Staff View</button>
+            <button class="btn btn-dark">
+                <i class="bi bi-box-arrow-right me-1"></i> Switch to Guest View
+            </button>
+        </div>
+    </div>
+
+    <p class="text-muted">Welcome to the Hotel Management System</p>
+
+    <div class="card mb-4 p-3 d-flex flex-row align-items-center">
+        <img src="favicon.png" width="40" class="me-3" />
+        <div>
+            <h5 class="mb-0">Grand Hotel</h5>
+            <small class="text-muted">Management System</small>
+        </div>
+    </div>
+
+    <!-- Top summary cards -->
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6>Rooms</h6>
+                <h3>8</h3>
+                <p class="text-success small mb-0">5 available <br /> +2 this month</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6>Occupancy Rate</h6>
+                <h3>12.5%</h3>
+                <p class="text-success small mb-0">+12% from last month</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6>Active Reservations</h6>
+                <h3>2</h3>
+                <p class="text-success small mb-0">1 pending</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm p-3">
+                <h6>Revenue (MTD)</h6>
+                <h3>$3,885</h3>
+                <p class="text-success small mb-0">+8% from last month</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room status & recent activity -->
+    <div class="row g-3 mt-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3 h-100">
+                <h6>Room Status Overview</h6>
+                <p class="text-muted small mb-2">Current status of all rooms</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><span class="badge bg-success me-2">&nbsp;</span>Available</span>
+                        <span>5 rooms</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><span class="badge bg-danger me-2">&nbsp;</span>Occupied</span>
+                        <span>1 room</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><span class="badge bg-warning me-2">&nbsp;</span>Reserved</span>
+                        <span>1 room</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><span class="badge bg-secondary me-2">&nbsp;</span>Maintenance</span>
+                        <span>1 room</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3 h-100">
+                <h6>Recent Activity</h6>
+                <p class="text-muted small mb-2">Latest guest activities</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <strong>John Smith</strong><br />
+                            <small class="text-muted">Checked in – Room 102</small>
+                        </div>
+                        <small class="text-muted">2 hours ago</small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <strong>Sarah Johnson</strong><br />
+                            <small class="text-muted">New booking – Room 202</small>
+                        </div>
+                        <small class="text-muted">4 hours ago</small>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div>
+                            <strong>Michael Brown</strong><br />
+                            <small class="text-muted">Checked out – Room 101</small>
+                        </div>
+                        <small class="text-muted">5 hours ago</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@page "/staff/login"
+@layout Components.Layout.StaffLoginLayout
+
+<PageTitle>Grand Hotel | Staff Login</PageTitle>
+
+<div class="d-flex flex-column align-items-center justify-content-center min-vh-100 bg-light">
+    <div class="text-center mb-4">
+        <img src="favicon.png" alt="Grand Hotel" width="60" class="mb-2" />
+        <h3>Grand Hotel</h3>
+        <p class="text-muted">Management System</p>
+    </div>
+
+    <div class="card shadow p-4" style="max-width: 420px; width: 100%;">
+        <h5 class="text-center mb-3">Welcome Back</h5>
+        <p class="text-center text-muted mb-4">Sign in to your account to continue</p>
+
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+            <div class="mb-3">
+                <label>Email Address</label>
+                <InputText class="form-control" @bind-Value="loginModel.Email" placeholder="john.smith@email.com" />
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <InputText class="form-control" @bind-Value="loginModel.Password" type="password" placeholder="Enter your password" />
+            </div>
+            <button class="btn btn-dark w-100" type="submit">Sign In</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+
+    private void HandleLogin()
+    {
+        Console.WriteLine($"Login attempt: {loginModel.Email}");
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
