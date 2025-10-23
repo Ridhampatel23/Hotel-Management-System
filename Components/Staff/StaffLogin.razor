@@ -1,5 +1,5 @@
 @page "/staff/login"
-@layout Components.Layout.StaffLoginLayout
+@layout Components.Layout.EmptyLayout
 
 <PageTitle>Grand Hotel | Staff Login</PageTitle>
 
@@ -14,7 +14,7 @@
         <h5 class="text-center mb-3">Welcome Back</h5>
         <p class="text-center text-muted mb-4">Sign in to your account to continue</p>
 
-        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" FormName="staffLoginForm">
             <div class="mb-3">
                 <label>Email Address</label>
                 <InputText class="form-control" @bind-Value="loginModel.Email" placeholder="john.smith@email.com" />
@@ -28,17 +28,87 @@
     </div>
 </div>
 
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject MyBlazorApp.Services.AuthService Auth
+
 @code {
     private LoginModel loginModel = new();
+    private bool isLoading = false;
+    private string errorMessage = "";
 
-    private void HandleLogin()
+    private async Task HandleLogin()
     {
-        Console.WriteLine($"Login attempt: {loginModel.Email}");
+        try
+        {
+            isLoading = true;
+            errorMessage = "";
+
+            // 👇 Replace with your real API endpoint
+            var apiUrl = "https://localhost:7080/api/auth/login";
+
+            // Send POST request with the login data
+            var response = await Http.PostAsJsonAsync(apiUrl, loginModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Read the JSON result from API
+                var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+                if (result != null && result.Success)
+                {
+                    Console.WriteLine($"✅ Logged in as {result.User.Name} ({result.User.Role})");
+
+                    // Register session in AuthService
+                    await Auth.LoginAsync(result.User.Role, result.User.Name);
+
+                    // Redirect based on role
+                    if (result.User.Role?.ToLower() == "staff")
+                        Navigation.NavigateTo("/staff/dashboard", true);
+                    else if (result.User.Role?.ToLower() == "guest")
+                        Navigation.NavigateTo("/guest/dashboard", true);
+                    else
+                        errorMessage = "Unknown user role.";
+                }
+                else
+                {
+                    errorMessage = result?.Message ?? "Invalid credentials.";
+                }
+            }
+            else
+            {
+                errorMessage = $"Server error: {response.StatusCode}";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"❌ Error: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 
+    // Models
     public class LoginModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class LoginResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public string Token { get; set; }
+        public UserModel User { get; set; }
+    }
+
+    public class UserModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Role { get; set; }
     }
 }

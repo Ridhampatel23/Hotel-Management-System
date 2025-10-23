@@ -1,5 +1,16 @@
 @page "/staff/dashboard"
 @layout Components.Layout.StaffLoginLayout
+@using MyBlazorApp.Components.Security
+
+<StaffAuthorize>
+    <!-- Staff-only content -->
+    <h3>Welcome @Auth.UserName</h3>
+    <p>This dashboard is visible only to logged-in staff.</p>
+</StaffAuthorize>
+
+@code {
+    [Inject] MyBlazorApp.Services.AuthService Auth { get; set; }
+}
 
 <PageTitle>Grand Hotel | Staff Dashboard</PageTitle>
 
