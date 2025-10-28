@@ -30,14 +30,13 @@
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
-@inject MyBlazorApp.Services.AuthService Auth
 
-@code {
+@* @code {
     private LoginModel loginModel = new();
     private bool isLoading = false;
-    private string errorMessage = "";
+    private string errorMessage = ""; *@
 
-    private async Task HandleLogin()
+    @* private async Task HandleLogin()
     {
         try
         {
@@ -88,27 +87,37 @@
         {
             isLoading = false;
         }
-    }
+    } *@
 
-    // Models
+    @code {
+    private LoginModel loginModel = new();
+    private string errorMessage = "";
+
+    private async Task HandleLogin()
+{
+    Console.WriteLine("✅ HandleLogin triggered!");
+
+    await Task.Delay(500);
+
+    var fakeUser = new UserModel { Id = 1, Name = "John Smith", Role = "Staff" };
+    await Auth.LoginAsync(fakeUser.Role!, fakeUser.Name!);
+
+    Console.WriteLine("✅ Navigating now...");
+    Navigation.NavigateTo("/staff/dashboard"        );
+}
+
+
+    // ✅ Models
     public class LoginModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class LoginResponse
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public string Token { get; set; }
-        public UserModel User { get; set; }
+        public string? Email { get; set; } = string.Empty;
+        public string? Password { get; set; } = string.Empty;
     }
 
     public class UserModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Role { get; set; }
+        public string? Name { get; set; } = string.Empty;
+        public string? Role { get; set; } = string.Empty;
     }
 }

@@ -5,13 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddScoped<MyBlazorApp.Services.AuthService>();
 
-
-// ✅ Register HttpClient so it can be injected in Razor components
+// ✅ Register HttpClient with your live backend URL
 builder.Services.AddScoped(sp => new HttpClient
 {
-    BaseAddress = new Uri("https://localhost:7080/") // your API base URL
+    BaseAddress = new Uri("https://hotel-backend-o5hk.onrender.com/api/")
 });
 
 var app = builder.Build();

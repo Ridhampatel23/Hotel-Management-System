@@ -1,16 +1,7 @@
 @page "/staff/dashboard"
 @layout Components.Layout.StaffLoginLayout
-@using MyBlazorApp.Components.Security
+@inject HttpClient Http
 
-<StaffAuthorize>
-    <!-- Staff-only content -->
-    <h3>Welcome @Auth.UserName</h3>
-    <p>This dashboard is visible only to logged-in staff.</p>
-</StaffAuthorize>
-
-@code {
-    [Inject] MyBlazorApp.Services.AuthService Auth { get; set; }
-}
 
 <PageTitle>Grand Hotel | Staff Dashboard</PageTitle>
 
@@ -35,93 +26,63 @@
         </div>
     </div>
 
-    <!-- Top summary cards -->
-    <div class="row g-3">
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <h6>Rooms</h6>
-                <h3>8</h3>
-                <p class="text-success small mb-0">5 available <br /> +2 this month</p>
-            </div>
+    @if (isLoading)
+    {
+        <p class="text-muted">Loading room data...</p>
+    }
+    else if (errorMessage != null)
+    {
+        <p class="text-danger">@errorMessage</p>
+    }
+    else if (rooms != null)
+    {
+        <div class="row g-3">
+            @foreach (var room in rooms)
+            {
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-3">
+                        <h6>Room @room.Id</h6>
+                        <h5>@room.RoomNumber</h5>
+                        <p class="small mb-0 text-muted">@room.RoomType</p>
+                        <p class="small mb-0">Status: <strong>@room.Status</strong></p>
+                        <p class="small mb-0">Price: $@room.PricePerNight</p>
+                    </div>
+                </div>
+            }
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <h6>Occupancy Rate</h6>
-                <h3>12.5%</h3>
-                <p class="text-success small mb-0">+12% from last month</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <h6>Active Reservations</h6>
-                <h3>2</h3>
-                <p class="text-success small mb-0">1 pending</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <h6>Revenue (MTD)</h6>
-                <h3>$3,885</h3>
-                <p class="text-success small mb-0">+8% from last month</p>
-            </div>
-        </div>
-    </div>
+    }
 
-    <!-- Room status & recent activity -->
-    <div class="row g-3 mt-3">
-        <div class="col-md-6">
-            <div class="card shadow-sm p-3 h-100">
-                <h6>Room Status Overview</h6>
-                <p class="text-muted small mb-2">Current status of all rooms</p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><span class="badge bg-success me-2">&nbsp;</span>Available</span>
-                        <span>5 rooms</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><span class="badge bg-danger me-2">&nbsp;</span>Occupied</span>
-                        <span>1 room</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><span class="badge bg-warning me-2">&nbsp;</span>Reserved</span>
-                        <span>1 room</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><span class="badge bg-secondary me-2">&nbsp;</span>Maintenance</span>
-                        <span>1 room</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm p-3 h-100">
-                <h6>Recent Activity</h6>
-                <p class="text-muted small mb-2">Latest guest activities</p>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between">
-                        <div>
-                            <strong>John Smith</strong><br />
-                            <small class="text-muted">Checked in – Room 102</small>
-                        </div>
-                        <small class="text-muted">2 hours ago</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <div>
-                            <strong>Sarah Johnson</strong><br />
-                            <small class="text-muted">New booking – Room 202</small>
-                        </div>
-                        <small class="text-muted">4 hours ago</small>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <div>
-                            <strong>Michael Brown</strong><br />
-                            <small class="text-muted">Checked out – Room 101</small>
-                        </div>
-                        <small class="text-muted">5 hours ago</small>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
+
+@code {
+    private List<Room>? rooms;
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Call your backend
+            rooms = await Http.GetFromJsonAsync<List<Room>>("https://hotel-backend-o5hk.onrender.com/api/Rooms");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load data: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    public class Room
+    {
+        public int Id { get; set; }
+        public string? RoomNumber { get; set; }
+        public string? RoomType { get; set; }
+        public bool IsAvailable { get; set; }
+        public decimal PricePerNight { get; set; }
+        public string? Status { get; set; }
+    }
+}

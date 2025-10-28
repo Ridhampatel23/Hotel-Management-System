@@ -1,5 +1,4 @@
 @inherits LayoutComponentBase
-@inject MyBlazorApp.Services.AuthService Auth
 @inject NavigationManager Navigation
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom px-4">
@@ -29,11 +28,3 @@
 <main class="container-fluid mt-3">
     @Body
 </main>
-
-@code {
-    private async Task Logout()
-    {
-        await Auth.LogoutAsync();
-        Navigation.NavigateTo("/staff/login", true);
-    }
-}
