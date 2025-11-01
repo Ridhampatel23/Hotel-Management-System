@@ -1,4 +1,103 @@
-﻿@page "/"
+﻿@page "/home"
+@rendermode InteractiveServer
+@inject MyBlazorApp.Components.State.SessionState Session
+@inject NavigationManager Nav
 
-<h1>Welcome</h1>
-<p>Base Blazor shell for the team. Build here.</p>
+<PageTitle>Grand Hotel — Welcome</PageTitle>
+
+@if (!Session.IsAuthenticated)
+{
+    Nav.NavigateTo("/login", true);
+}
+else
+{
+<div class="container">
+  <div class="brandbar">
+    <div class="brand-left">
+      <div class="logo">🏨</div>
+      <div>
+        <div class="brand-title">Grand Hotel</div>
+        <div class="brand-sub">Management System</div>
+      </div>
+    </div>
+    <div class="brand-right">
+      <a class="chip">Guest View</a>
+      <a class="chip outline">Switch to Staff View</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="badge">⭐ 5-Star Luxury Hotel</div>
+    <h1>Welcome to Grand Hotel</h1>
+    <p>Experience luxury and comfort in the heart of the city. Book your perfect stay with us today.</p>
+    <div class="hero-actions">
+      <button class="btn primary">Book Now →</button>
+      <button class="btn">View Rooms</button>
+    </div>
+    <ul class="hero-perks">
+      <li>🏙️ Downtown Location</li><li>👨‍👩‍👧 Family Friendly</li><li>🕘 24/7 Service</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">World-Class Amenities</h3>
+    <p class="muted center">Everything you need for a comfortable and memorable stay</p>
+    <div class="grid amenities">
+      <div class="card amenity"><div class="icon">📶</div><div class="title">Free WiFi</div><div class="sub">High-speed internet throughout</div></div>
+      <div class="card amenity"><div class="icon">🥐</div><div class="title">Breakfast</div><div class="sub">Complimentary daily breakfast</div></div>
+      <div class="card amenity"><div class="icon">🍽️</div><div class="title">Restaurant</div><div class="sub">Fine dining on-site</div></div>
+      <div class="card amenity"><div class="icon">🚗</div><div class="title">Parking</div><div class="sub">Free valet parking</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">Our Rooms</h3>
+    <p class="muted center">Choose from our selection of beautifully designed rooms and suites</p>
+    <div class="grid rooms">
+      <article class="room-card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop');"></div>
+        <div class="room-body">
+          <div class="room-title">Standard Room</div>
+          <div class="price"><div class="amount">$99</div><div class="unit">per night</div></div>
+          <div class="tags"><span>Queen Bed</span><span>City View</span><span>WiFi</span></div>
+        </div>
+      </article>
+      <article class="room-card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1496412705862-e0088f16f791?q=80&w=1200&auto=format&fit=crop');"></div>
+        <div class="room-body">
+          <div class="room-title">Deluxe Suite</div>
+          <div class="price"><div class="amount">$299</div><div class="unit">per night</div></div>
+          <div class="tags"><span>King Bed</span><span>Ocean View</span><span>Balcony</span></div>
+        </div>
+      </article>
+      <article class="room-card">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1200&auto=format&fit=crop');"></div>
+        <div class="room-body">
+          <div class="room-title">Presidential Suite</div>
+          <div class="price"><div class="amount">$399</div><div class="unit">per night</div></div>
+          <div class="tags"><span>2 Bedrooms</span><span>Jacuzzi</span><span>Butler Service</span></div>
+        </div>
+      </article>
+    </div>
+    <div class="center"><button class="btn primary">View All Rooms</button></div>
+  </section>
+
+  <section class="section">
+    <h3 class="section-title">Guest Reviews</h3>
+    <p class="muted center">See what our guests are saying about their stay</p>
+    <div class="grid reviews">
+      <div class="card review"><div class="stars">★★★★★</div><p>Absolutely wonderful experience! The staff was incredibly helpful and the rooms were immaculate.</p><div class="author">Sarah Johnson</div><div class="date">September 2025</div></div>
+      <div class="card review"><div class="stars">★★★★★</div><p>Best hotel stay I’ve had in years. The location is perfect and the amenities are top-notch.</p><div class="author">Michael Chen</div><div class="date">August 2025</div></div>
+      <div class="card review"><div class="stars">★★★★★</div><p>Highly recommend! Beautiful rooms, excellent service, and great value for money.</p><div class="author">Emily Rodriguez</div><div class="date">August 2025</div></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-overlay">
+      <h2>Ready to Book Your Stay?</h2>
+      <p>Join thousands of satisfied guests and experience luxury at its finest</p>
+      <button class="btn primary">Start Booking →</button>
+    </div>
+  </section>
+</div>
+}

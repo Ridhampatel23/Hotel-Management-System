@@ -1,24 +1,42 @@
 using MyBlazorApp.Components;
+using MyBlazorApp.Components.Services;
+using MyBlazorApp.Components.State;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+// CHANGE THIS to your backend base URL
+var apiBase = builder.Configuration["Api:BaseUrl"] ?? "https://YOUR-BACKEND-BASE-URL";
+
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+// One CookieContainer per user circuit so the backend session cookie persists
+builder.Services.AddScoped(_ => new CookieContainer());
+
+builder.Services.AddScoped(sp =>
+{
+    var cookies = sp.GetRequiredService<CookieContainer>();
+    var handler = new HttpClientHandler
+    {
+        CookieContainer = cookies,
+        UseCookies = true,
+        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+    };
+    return new HttpClient(handler) { BaseAddress = new Uri(apiBase) };
+});
+
+builder.Services.AddScoped<SessionState>();
+builder.Services.AddScoped<AuthClient>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
 
 app.MapStaticAssets();

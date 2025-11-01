@@ -1,0 +1,15 @@
+﻿.auth-wrap { max-width: 520px; margin: 4rem auto; }
+.brand { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+.logo { width:40px; height:40px; display:grid; place-items:center; border-radius:10px; background:#111827; color:#fff; }
+.title { margin:0; font-weight:700; }
+.subtitle { font-size:.9rem; color:#6b7280; margin-top:-.25rem }
+.card { background:#fff; border:1px solid #e5e7eb; border-radius:14px; padding:1rem 1.25rem 1.25rem }
+.field { display:flex; flex-direction:column; gap:.35rem; margin-bottom:.75rem }
+.input { border:1px solid #d1d5db; border-radius:10px; padding:.65rem .75rem }
+.btn { border-radius:10px; padding:.65rem .9rem; border:1px solid transparent; }
+.btn.primary { background:#0b1025; color:#fff; border-color:#0b1025 }
+.alert { background:#fee2e2; border:1px solid #ef4444; color:#991b1b; padding:.5rem .75rem; border-radius:8px; margin-bottom:.75rem }
+.alert.success { background:#e0fce7; border-color:#16a34a; color:#166534 }
+.small { font-size:.9rem }
+.spinner { width:14px; height:14px; border:2px solid #fff; border-bottom-color:transparent; border-radius:50%; display:inline-block; margin-right:.4rem; animation:spin .7s linear infinite; vertical-align:middle }
+@keyframes spin { to { transform: rotate(360deg);} }

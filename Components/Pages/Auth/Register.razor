@@ -1,0 +1,112 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using MyBlazorApp.Components.Services
+@inject AuthClient Auth
+@inject NavigationManager Nav
+
+<PageTitle>Create Account · Grand Hotel</PageTitle>
+
+<div class="auth-wrap">
+    <header class="brand">
+        <div class="logo">🏨</div>
+        <div>
+            <h3 class="title">Grand Hotel</h3>
+            <div class="subtitle">Management System</div>
+        </div>
+    </header>
+
+    <section class="card">
+        <h4>Create Account</h4>
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <div class="alert">@Error</div>
+        }
+
+        <EditForm Model="@vm" OnValidSubmit="@Submit" FormName="registerForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="row">
+                <div class="field">
+                    <label>First Name</label>
+                    <InputText @bind-Value="vm.FirstName" class="input" />
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <InputText @bind-Value="vm.LastName" class="input" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                <InputText @bind-Value="vm.Email" class="input" />
+            </div>
+
+            <div class="field">
+                <label>Phone Number</label>
+                <InputText @bind-Value="vm.PhoneNumber" class="input" />
+            </div>
+
+            <div class="field">
+                <label>Address</label>
+                <InputText @bind-Value="vm.Address" class="input" />
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <InputText @bind-Value="vm.Password" type="password" class="input" />
+            </div>
+
+            <button class="btn primary" disabled="@Busy">
+                @if (Busy) { <span class="spinner"></span> } Create Account
+            </button>
+        </EditForm>
+
+        <div class="muted small" style="margin-top:.75rem">
+            Already have an account? <a href="/login">Sign in</a>
+        </div>
+    </section>
+</div>
+
+@code {
+    private bool Busy;
+    private string? Error;
+
+    public class RegisterVm
+    {
+        [Required] public string Email { get; set; } = "";
+        [Required] public string Password { get; set; } = "";
+        [Required] public string FirstName { get; set; } = "";
+        [Required] public string LastName { get; set; } = "";
+        [Required] public string PhoneNumber { get; set; } = "";
+        [Required] public string Address { get; set; } = "";
+    }
+
+    private readonly RegisterVm vm = new();
+
+    private async Task Submit()
+    {
+        Error = null; Busy = true;
+
+        var ok = await Auth.RegisterAsync(new(
+            vm.Email,
+            vm.Password,
+            vm.FirstName,
+            vm.LastName,
+            vm.PhoneNumber,
+            vm.Address
+        ));
+
+        Busy = false;
+
+        if (!ok)
+        {
+            Error = "Registration failed. Please try again.";
+            return;
+        }
+
+        Nav.NavigateTo("/login?registered=1", true);
+    }
+}

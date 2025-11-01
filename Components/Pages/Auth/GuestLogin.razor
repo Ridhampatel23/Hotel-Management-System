@@ -1,0 +1,81 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using MyBlazorApp.Components.Services
+@inject AuthClient Auth
+@inject NavigationManager Nav
+@inject MyBlazorApp.Components.State.SessionState Session
+
+<PageTitle>Sign In · Grand Hotel</PageTitle>
+
+<div class="auth-wrap">
+  <header class="brand">
+    <div class="logo">🏨</div>
+    <div>
+      <h3 class="title">Grand Hotel</h3>
+      <div class="subtitle">Management System</div>
+    </div>
+  </header>
+
+  <section class="card">
+    <h4>Welcome Back</h4>
+
+    @if (RegisteredFlash) { <div class="alert success">Account created. Please sign in.</div> }
+    @if (!string.IsNullOrEmpty(Error)) { <div class="alert">@Error</div> }
+
+    <EditForm Model="@vm" OnValidSubmit="@Submit" FormName="loginForm">
+      <DataAnnotationsValidator />
+      <div class="field">
+        <label>Email Address</label>
+        <InputText @bind-Value="vm.Email" class="input" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <InputText @bind-Value="vm.Password" type="password" class="input" />
+      </div>
+      <button class="btn primary" disabled="@Busy">
+        @if (Busy) { <span class="spinner"></span> } Sign In
+      </button>
+    </EditForm>
+
+    <div class="muted small" style="margin-top:.75rem">
+      Don’t have an account? <a href="/register">Sign up</a>
+    </div>
+
+    @if (Session.IsAuthenticated)
+    {
+      <div class="muted small" style="margin-top:.5rem">
+        Signed in as <b>@Session.User?.Name</b>.
+      </div>
+    }
+  </section>
+</div>
+
+@code {
+  private bool Busy;
+  private string? Error;
+  private bool RegisteredFlash;
+
+  public class LoginVm
+  {
+      [Required, EmailAddress] public string Email { get; set; } = "";
+      [Required] public string Password { get; set; } = "";
+  }
+  private readonly LoginVm vm = new();
+
+  protected override void OnInitialized()
+  {
+      RegisteredFlash = new Uri(Nav.Uri).Query.Contains("registered=1");
+  }
+  
+  private async Task Submit()
+  {
+    Error = null; Busy = true;
+    var ok = await Auth.LoginAsync(vm.Email, vm.Password);
+    Busy = false;
+
+    if (!ok) { Error = "Invalid email or password."; return; }
+    Nav.NavigateTo("/home");   // ← go to the new placeholder page
+  }
+
+}
