@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\malha\\OneDrive\\Desktop\\project\\Hotel-Management-System\\HotelManagementSystem.csproj": {}
+    "C:\\Users\\malha\\OneDrive\\Desktop\\New folder (5)\\Hotel-Management-System\\HotelManagementSystem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\malha\\OneDrive\\Desktop\\project\\Hotel-Management-System\\HotelManagementSystem.csproj": {
+    "C:\\Users\\malha\\OneDrive\\Desktop\\New folder (5)\\Hotel-Management-System\\HotelManagementSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\malha\\OneDrive\\Desktop\\project\\Hotel-Management-System\\HotelManagementSystem.csproj",
+        "projectUniqueName": "C:\\Users\\malha\\OneDrive\\Desktop\\New folder (5)\\Hotel-Management-System\\HotelManagementSystem.csproj",
         "projectName": "HotelManagementSystem",
-        "projectPath": "C:\\Users\\malha\\OneDrive\\Desktop\\project\\Hotel-Management-System\\HotelManagementSystem.csproj",
+        "projectPath": "C:\\Users\\malha\\OneDrive\\Desktop\\New folder (5)\\Hotel-Management-System\\HotelManagementSystem.csproj",
         "packagesPath": "C:\\Users\\malha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\malha\\OneDrive\\Desktop\\project\\Hotel-Management-System\\obj\\",
+        "outputPath": "C:\\Users\\malha\\OneDrive\\Desktop\\New folder (5)\\Hotel-Management-System\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
