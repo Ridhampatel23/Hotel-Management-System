@@ -1,0 +1,277 @@
+﻿@page "/roomdetails/{Id:int}"
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using MyBlazorApp.Components.Services
+@inject RoomsClient RoomsApi
+@inject NavigationManager Nav
+
+<PageTitle>Complete Your Booking · Grand Hotel</PageTitle>
+
+@if (loading)
+{
+    <div class="details-loading">Loading room details...</div>
+}
+else if (room is null)
+{
+    <div class="details-error">
+        Could not find this room. <a href="/rooms">Back to rooms</a>
+    </div>
+}
+else
+{
+    <div class="booking-page">
+
+        <!-- HEADER -->
+        <header class="booking-header">
+            <button class="back-btn" @onclick="GoBack">←</button>
+            <div>
+                <h2>Complete Your Booking</h2>
+                <p>Just a few more details to confirm your reservation</p>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <EditForm Model="@vm" OnValidSubmit="@ConfirmBooking" FormName="bookingForm">
+            <DataAnnotationsValidator />
+
+            <div class="booking-layout">
+
+                <!-- LEFT COLUMN -->
+                <div class="booking-left">
+
+                    <!-- GUEST INFO -->
+                    <section class="card-block">
+                        <h4 class="card-title">Guest Information</h4>
+                        <p class="card-sub">Please provide your contact details</p>
+
+                        <div class="field-grid-2">
+                            <div class="field">
+                                <label>Full Name *</label>
+                                <InputText class="input" @bind-Value="vm.FullName" />
+                                <ValidationMessage For="@(() => vm.FullName)" />
+                            </div>
+
+                            <div class="field">
+                                <label>Phone Number *</label>
+                                <InputText class="input" @bind-Value="vm.PhoneNumber" />
+                                <ValidationMessage For="@(() => vm.PhoneNumber)" />
+                            </div>
+                        </div>
+
+                        <div class="field-grid-2">
+                            <div class="field">
+                                <label>Email Address *</label>
+                                <InputText class="input" @bind-Value="vm.Email" />
+                                <ValidationMessage For="@(() => vm.Email)" />
+                            </div>
+
+                            <div class="field">
+                                <label>Guests</label>
+                                <InputNumber class="input" @bind-Value="vm.Guests" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Special Requests (Optional)</label>
+                            <InputTextArea class="input textarea" rows="3" @bind-Value="vm.SpecialRequests" />
+                        </div>
+
+                        <p class="hint">
+                            Special requests are subject to availability and cannot be guaranteed.
+                        </p>
+                    </section>
+
+                    <!-- PAYMENT INFO -->
+                    <section class="card-block">
+                        <h4 class="card-title">Payment Information</h4>
+                        <p class="card-sub">Secure payment processing</p>
+
+                        <div class="secure-banner">
+                            Your payment information is encrypted and secure. We use industry-standard SSL encryption.
+                        </div>
+
+                        <div class="field">
+                            <label>Cardholder Name *</label>
+                            <InputText class="input" @bind-Value="vm.CardholderName" />
+                            <ValidationMessage For="@(() => vm.CardholderName)" />
+                        </div>
+
+                        <div class="field">
+                            <label>Card Number *</label>
+                            <InputText class="input" @bind-Value="vm.CardNumber" />
+                            <ValidationMessage For="@(() => vm.CardNumber)" />
+                        </div>
+
+                        <div class="field-grid-2">
+                            <div class="field">
+                                <label>Expiry Date *</label>
+                                <InputText class="input" placeholder="MM/YY" @bind-Value="vm.Expiry" />
+                                <ValidationMessage For="@(() => vm.Expiry)" />
+                            </div>
+
+                            <div class="field">
+                                <label>CVV *</label>
+                                <InputText class="input" @bind-Value="vm.Cvv" />
+                                <ValidationMessage For="@(() => vm.Cvv)" />
+                            </div>
+                        </div>
+
+                        <div class="terms-row">
+                            <InputCheckbox @bind-Value="vm.AcceptTerms" class="terms-checkbox" />
+                            <span>
+                                I agree to the Terms and Conditions *
+                                <span class="terms-note">
+                                    By checking this box, you agree to our cancellation policy, privacy policy, and terms of service.
+                                </span>
+                            </span>
+                        </div>
+                        <ValidationMessage For="@(() => vm.AcceptTerms)" />
+                    </section>
+
+                </div>
+
+                <!-- RIGHT COLUMN: SUMMARY -->
+                <aside class="booking-right">
+                    <section class="card-block summary-card">
+                        <div class="summary-image"></div>
+
+                        <div class="summary-body">
+                            <h4>@FormatType(room.RoomType)</h4>
+                            <div class="summary-roomline">
+                                Room @room.RoomId
+                            </div>
+
+                            <div class="summary-section">
+                                <div class="summary-label">Check-in</div>
+                                <div class="summary-row">
+                                    <InputDate TValue="DateTime"
+                                               class="input"
+                                               @bind-Value="CheckIn" />
+                                </div>
+                            </div>
+
+                            <div class="summary-section">
+                                <div class="summary-label">Check-out</div>
+                                <div class="summary-row">
+                                    <InputDate TValue="DateTime"
+                                               class="input"
+                                               @bind-Value="CheckOut" />
+                                </div>
+                            </div>
+
+                            <div class="summary-section">
+                                <div class="summary-label">Guests</div>
+                                <div class="summary-value">@vm.Guests @((vm.Guests == 1) ? "Guest" : "Guests")</div>
+                            </div>
+
+                            <hr />
+
+                            <div class="summary-section">
+                                <div class="summary-line">
+                                    <span>$@room.Price × @Nights night@(Nights == 1 ? "" : "s")</span>
+                                    <span>$@Subtotal.ToString("0.00")</span>
+                                </div>
+                                <div class="summary-line">
+                                    <span>Taxes &amp; Fees</span>
+                                    <span>$@Taxes.ToString("0.00")</span>
+                                </div>
+                            </div>
+
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span>$@Total.ToString("0.00")</span>
+                            </div>
+
+                            <ul class="summary-notes">
+                                <li>Free cancellation up to 24 hours before check-in</li>
+                                <li>No prepayment needed</li>
+                                <li>Pay at the property</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <button class="btn primary full-width" type="submit" disabled="@Busy">
+                        @if (Busy) { <span class="spinner"></span> } Confirm Booking
+                    </button>
+                </aside>
+
+            </div>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private RoomDto? room;
+    private bool loading = true;
+    private bool Busy;
+
+    // dates for booking
+    private DateTime CheckIn = DateTime.Today.AddDays(1);
+    private DateTime CheckOut = DateTime.Today.AddDays(2);
+
+    // computed price
+    private int Nights => Math.Max(1, (CheckOut.Date - CheckIn.Date).Days);
+    private decimal Subtotal => (room?.Price ?? 0m) * Nights;
+    private decimal Taxes => Math.Round(Subtotal * 0.10m, 2);
+    private decimal Total => Subtotal + Taxes;
+
+    public class BookingVm
+    {
+        [Required] public string FullName { get; set; } = "";
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required] public string PhoneNumber { get; set; } = "";
+        public int Guests { get; set; } = 1;
+        public string? SpecialRequests { get; set; }
+
+        [Required] public string CardholderName { get; set; } = "";
+        [Required] public string CardNumber { get; set; } = "";
+        [Required] public string Expiry { get; set; } = "";
+        [Required] public string Cvv { get; set; } = "";
+
+        [Required(ErrorMessage = "You must accept the terms to continue.")]
+        public bool AcceptTerms { get; set; }
+    }
+
+    private readonly BookingVm vm = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        loading = true;
+
+        try
+        {
+            room = await RoomsApi.GetRoomById(Id);
+        }
+        catch
+        {
+            room = null;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void GoBack() => Nav.NavigateTo("/rooms");
+
+    private async Task ConfirmBooking()
+    {
+        Busy = true;
+
+        // later: call /api/reservations etc.
+        await Task.Delay(400);
+
+        Busy = false;
+
+        // Go to confirmation page (static for now)
+        Nav.NavigateTo("/booking-confirmation");
+    }
+
+    private static string FormatType(string? type)
+        => string.IsNullOrWhiteSpace(type)
+            ? "Room"
+            : char.ToUpper(type[0]) + type[1..].ToLower();
+}
