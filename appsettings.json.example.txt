@@ -1,0 +1,16 @@
+﻿# This is an example file for application settings.
+# Copy this file to appsettings.json and modify the values as needed.
+# It contains the connection string for the database and other api keys.
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Api": {
+    "BaseUrl": "Your Backend API Base URL"
+  },
+  "AllowedHosts": "*"
+}
