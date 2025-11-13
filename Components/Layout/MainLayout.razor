@@ -1,14 +1,28 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <header class="topbar px-4">
-        <!-- placeholder: add your future top nav here -->
-        <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+
+    <!-- TOP NAVBAR / BRANDBAR -->
+    <header class="brandbar px-4">
+        <div class="brand-left">
+            <div class="logo">🏨</div>
+            <div>
+                <div class="brand-title">Grand Hotel</div>
+                <div class="brand-sub">Management System</div>
+            </div>
+        </div>
+
+        <div class="brand-right">
+            <a class="chip">Guest View</a>
+            <a class="chip outline">Switch to Staff View</a>
+        </div>
     </header>
 
+    <!-- PAGE CONTENT -->
     <main class="content px-4">
         @Body
     </main>
+
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>

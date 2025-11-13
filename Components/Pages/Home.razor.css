@@ -15,7 +15,7 @@
 .btn.primary{background:#0b1025;border-color:#0b1025;color:#fff}
 .hero-perks{display:flex;gap:1rem;list-style:none;padding:0;margin:0;color:#e5e7eb;font-size:.95rem;flex-wrap:wrap}
 .section{margin:2rem 0}.section-title{text-align:center;margin-bottom:.25rem}.muted{color:#6b7280}.center{text-align:center}
-.grid{display:grid;gap:1rem}.amenities{grid-template-columns:repeat(2,1fr)}
+.grid{display:grid;gap:1rem;margin-bottom: 10px}.amenities{grid-template-columns:repeat(2,1fr)}
 .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1rem}
 .amenity .icon{font-size:1.6rem;margin-bottom:.25rem}.amenity .title{font-weight:600}.amenity .sub{color:#6b7280;font-size:.92rem}
 .rooms{grid-template-columns:repeat(3,1fr)}

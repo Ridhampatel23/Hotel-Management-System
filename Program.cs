@@ -1,6 +1,5 @@
 using MyBlazorApp.Components;
 using MyBlazorApp.Components.Services;
-using MyBlazorApp.Components.State;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +24,8 @@ builder.Services.AddScoped(sp =>
     return new HttpClient(handler) { BaseAddress = new Uri(apiBase) };
 });
 
-builder.Services.AddScoped<SessionState>();
 builder.Services.AddScoped<AuthClient>();
+builder.Services.AddScoped<RoomsClient>();
 
 var app = builder.Build();
 

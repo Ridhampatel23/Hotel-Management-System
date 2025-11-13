@@ -1,38 +1,18 @@
 ﻿@page "/home"
 @rendermode InteractiveServer
-@inject MyBlazorApp.Components.State.SessionState Session
 @inject NavigationManager Nav
+
 
 <PageTitle>Grand Hotel — Welcome</PageTitle>
 
-@if (!Session.IsAuthenticated)
-{
-    Nav.NavigateTo("/login", true);
-}
-else
-{
 <div class="container">
-  <div class="brandbar">
-    <div class="brand-left">
-      <div class="logo">🏨</div>
-      <div>
-        <div class="brand-title">Grand Hotel</div>
-        <div class="brand-sub">Management System</div>
-      </div>
-    </div>
-    <div class="brand-right">
-      <a class="chip">Guest View</a>
-      <a class="chip outline">Switch to Staff View</a>
-    </div>
-  </div>
 
   <section class="hero">
     <div class="badge">⭐ 5-Star Luxury Hotel</div>
     <h1>Welcome to Grand Hotel</h1>
     <p>Experience luxury and comfort in the heart of the city. Book your perfect stay with us today.</p>
     <div class="hero-actions">
-      <button class="btn primary">Book Now →</button>
-      <button class="btn">View Rooms</button>
+      <button class="btn primary" @onclick="GoToRooms" >Book Now →</button>
     </div>
     <ul class="hero-perks">
       <li>🏙️ Downtown Location</li><li>👨‍👩‍👧 Family Friendly</li><li>🕘 24/7 Service</li>
@@ -100,4 +80,11 @@ else
     </div>
   </section>
 </div>
+
+@code
+{
+  void GoToRooms()
+  {
+    Nav.NavigateTo("/rooms");
+  }
 }

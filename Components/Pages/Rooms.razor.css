@@ -1,0 +1,278 @@
+﻿.rooms-page {
+    max-width: 1120px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem 3rem;
+}
+
+.rooms-header h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+}
+
+.rooms-header p {
+    color: #6b6b6b;
+    font-size: 0.9rem;
+}
+
+/* SEARCH CARD */
+
+.search-card {
+    margin-top: 1.5rem;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    border: 1px solid #f1f1f1;
+}
+
+.search-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.search-sub {
+    margin: 0.15rem 0 1rem;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.search-field label {
+    display: block;
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 0.25rem;
+}
+
+.search-field input {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+}
+
+.search-field input:focus {
+    outline: none;
+    border-color: #111827;
+}
+
+.search-action {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+/* BUTTONS */
+
+.btn {
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.55rem 1.4rem;
+    transition: background 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.btn.primary {
+    background: #111827;
+    color: #ffffff;
+}
+
+.btn.primary:hover {
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+}
+
+.btn.secondary {
+    background: #747480;
+    color: #ffffff;
+    width: 100%;
+}
+
+.btn.secondary:hover {
+    box-shadow: 0 6px 18px rgba(148, 163, 184, 0.5);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* LOADING / ERRORS */
+
+.loading {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.alert {
+    margin-top: 2rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 0.85rem;
+}
+
+/* ROOMS GRID */
+
+.rooms-grid {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.room-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fake image header */
+
+.room-image {
+    position: relative;
+    height: 180px;
+    background: linear-gradient(135deg, #4b5563, #9ca3af);
+}
+
+/* Status badge */
+
+.status-chip {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+}
+
+.status-chip.available {
+    background: #16a34a;
+}
+
+.status-chip.occupied {
+    background: #dc2626;
+}
+
+/* BODY / META */
+
+.room-body {
+    padding: 1rem 1.2rem 0.8rem;
+    flex: 1;
+}
+
+.room-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.room-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.room-number {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.room-floor {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.1rem;
+}
+
+.room-type-chip {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #d4d4d8;
+    color: #4b5563;
+    text-transform: capitalize;
+}
+
+/* Price / guests / amenities */
+
+.room-meta {
+    font-size: 0.82rem;
+}
+
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+    margin-bottom: 0.35rem;
+}
+
+.price-symbol {
+    font-size: 0.8rem;
+}
+
+.price-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.price-unit {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.guests-row {
+    margin-bottom: 0.45rem;
+}
+
+.meta-label {
+    display: block;
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+.meta-value {
+    font-weight: 500;
+}
+
+.amenities {
+    margin-top: 0.3rem;
+}
+
+.amenity-label {
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin-bottom: 0.15rem;
+}
+
+.amenities ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: #374151;
+}
+
+/* FOOTER */
+
+.room-footer {
+    padding: 0.8rem 1.2rem 1rem;
+}

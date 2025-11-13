@@ -1,0 +1,160 @@
+﻿@page "/rooms"
+@using MyBlazorApp.Components.Services
+@rendermode InteractiveServer
+@inject RoomsClient RoomsApi
+@inject NavigationManager Nav
+
+<PageTitle>Book Your Stay · Grand Hotel</PageTitle>
+
+<div class="rooms-page">
+
+  <!-- PAGE HEADER -->
+  <section class="rooms-header">
+    <h2>Book Your Stay</h2>
+    <p>Find and book the perfect room for your stay</p>
+  </section>
+
+  <!-- SEARCH CARD (UI ONLY) -->
+  <section class="search-card">
+    <h4>Search Available Rooms</h4>
+    <p class="search-sub">Select your dates and number of guests.</p>
+
+    <div class="search-grid">
+      <div class="search-field">
+        <label>Check-in</label>
+        <input type="date" />
+      </div>
+      <div class="search-field">
+        <label>Check-out</label>
+        <input type="date" />
+      </div>
+      <div class="search-field">
+        <label>Guests</label>
+        <input type="number" min="1" value="1" />
+      </div>
+      <div class="search-field search-action">
+        <button class="btn primary">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS GRID -->
+  @if (loading)
+  {
+      <div class="loading">Loading rooms...</div>
+  }
+  else if (!string.IsNullOrEmpty(error))
+  {
+      <div class="alert">@error</div>
+  }
+  else
+  {
+      <section class="rooms-grid">
+        @foreach (var room in rooms)
+        {
+            <article class="room-card"
+                     @onclick="@(() => GoToDetails(room.RoomId))"
+                     style="cursor:pointer">
+
+                <!-- IMAGE / STATUS BADGE -->
+                <div class="room-image">
+                    <span class="status-chip @(room.Status.Equals("available", StringComparison.OrdinalIgnoreCase) ? "available" : "occupied")">
+                        @(
+                          room.Status.Equals("available", StringComparison.OrdinalIgnoreCase)
+                          ? "Available"
+                          : "Occupied"
+                        )
+                    </span>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="room-body">
+                    <div class="room-header">
+                        <div>
+                            <div class="room-label">Room</div>
+                            <div class="room-number">@room.RoomId</div>
+                            <div class="room-floor">Floor @GetFloor(room.RoomId)</div>
+                        </div>
+                        <span class="room-type-chip">@FormatType(room.RoomType)</span>
+                    </div>
+
+                    <div class="room-meta">
+                        <div class="price-row">
+                            <span class="price-symbol">$</span>
+                            <span class="price-value">@room.Price</span>
+                            <span class="price-unit">per night</span>
+                        </div>
+
+                        <div class="guests-row">
+                            <span class="meta-label">Typical occupancy</span>
+                            <span class="meta-value">Up to @GetGuests(room.RoomType) guests</span>
+                        </div>
+
+                        <div class="amenities">
+                            <div class="amenity-label">Amenities:</div>
+                            <ul>
+                                <li>WiFi</li>
+                                <li>TV</li>
+                                <li>Mini Bar</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="room-footer">
+                    <button class="btn secondary"
+                            disabled="@(room.Status.Equals("occupied", StringComparison.OrdinalIgnoreCase))">
+                        @(room.Status.Equals("available", StringComparison.OrdinalIgnoreCase)
+                          ? "Select Dates"
+                          : "Not Available")
+                    </button>
+                </div>
+            </article>
+        }
+      </section>
+  }
+
+</div>
+
+@code {
+    private bool loading = true;
+    private string? error;
+    private List<RoomDto> rooms = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            rooms = await RoomsApi.GetAllRooms();
+        }
+        catch (Exception)
+        {
+            error = "Unable to load rooms at the moment. Please try again.";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void GoToDetails(int roomId)
+        => Nav.NavigateTo($"/roomdetails/{roomId}");
+
+    private static string FormatType(string? type)
+        => string.IsNullOrWhiteSpace(type)
+            ? "Room"
+            : char.ToUpper(type[0]) + type[1..].ToLower();
+
+    private static int GetFloor(int roomId)
+        => 1 + ((roomId - 1) / 2);
+
+    private static int GetGuests(string? type)
+        => type?.ToLower() switch
+        {
+            "single" => 1,
+            "double" => 2,
+            "suite"  => 4,
+            _        => 2
+        };
+}
