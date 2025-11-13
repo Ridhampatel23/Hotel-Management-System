@@ -1,0 +1,168 @@
+﻿@page "/booking-confirmation"
+@rendermode InteractiveServer
+@inject NavigationManager Nav
+
+<PageTitle>Booking Confirmed · Grand Hotel</PageTitle>
+
+<div class="confirm-page">
+
+    <!-- success banner -->
+    <section class="confirm-banner">
+        <div class="confirm-icon">✔</div>
+        <div>
+            <div class="confirm-banner-title">Booking Confirmed!</div>
+            <div class="confirm-banner-text">
+                Your reservation has been successfully confirmed.
+                A confirmation email has been sent to john.smith@email.com
+                (placeholder text – hook up real data later).
+            </div>
+        </div>
+    </section>
+
+    <!-- confirmation number -->
+    <section class="confirm-code-card">
+        <div class="confirm-code-label">Confirmation Number</div>
+        <div class="confirm-code-value">GH-2025-001234</div>
+        <div class="confirm-code-sub">Please save this number for your records</div>
+    </section>
+
+    <!-- reservation details -->
+    <section class="card-block confirm-details">
+        <div class="confirm-details-header">
+            <div>
+                <h4>Reservation Details</h4>
+                <p>Review your booking information</p>
+            </div>
+            <span class="status-pill">Confirmed</span>
+        </div>
+
+        <div class="confirm-details-body">
+
+            <!-- image -->
+            <div class="confirm-image"></div>
+
+            <!-- room basic info -->
+            <div class="confirm-room-info">
+                <h4>Deluxe Suite</h4>
+                <div class="confirm-room-sub">Room 302</div>
+                <div class="confirm-tags">
+                    <span>WiFi</span>
+                    <span>TV</span>
+                    <span>Mini Bar</span>
+                    <span>Coffee Maker</span>
+                    <span>+4 more</span>
+                </div>
+            </div>
+
+            <!-- dates + guests -->
+            <div class="confirm-grid-2">
+                <div class="confirm-info-block">
+                    <div class="label">Check-in</div>
+                    <div class="value">Tuesday, October 14, 2025</div>
+                    <div class="sub">After 3:00 PM</div>
+                </div>
+
+                <div class="confirm-info-block">
+                    <div class="label">Check-out</div>
+                    <div class="value">Sunday, October 19, 2025</div>
+                    <div class="sub">Before 11:00 AM</div>
+                </div>
+
+                <div class="confirm-info-block">
+                    <div class="label">Guests</div>
+                    <div class="value">2 Guests</div>
+                </div>
+
+                <div class="confirm-info-block">
+                    <div class="label">Duration</div>
+                    <div class="value">5 Nights</div>
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- guest info -->
+            <div class="confirm-section">
+                <h5>Guest Information</h5>
+                <div class="confirm-grid-2">
+                    <div class="confirm-info-block">
+                        <div class="label">Name</div>
+                        <div class="value">John Smith</div>
+                    </div>
+                    <div class="confirm-info-block">
+                        <div class="label">Email</div>
+                        <div class="value">john.smith@email.com</div>
+                    </div>
+                    <div class="confirm-info-block">
+                        <div class="label">Phone</div>
+                        <div class="value">+1-555-0101</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- payment summary -->
+            <div class="confirm-section">
+                <h5>Payment Summary</h5>
+                <div class="confirm-summary-lines">
+                    <div class="summary-line">
+                        <span>Room Rate (5 nights)</span>
+                        <span>$1995.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Taxes &amp; Fees</span>
+                        <span>$199.50</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total Amount</span>
+                        <span>$2194.50</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- info box -->
+    <section class="card-block confirm-info-card">
+        <h5>Important Information</h5>
+        <div class="confirm-info-grid">
+            <div class="confirm-info-row">
+                <span class="label">Check-in Time:</span>
+                <span class="value">3:00 PM – Early check-in available upon request</span>
+            </div>
+            <div class="confirm-info-row">
+                <span class="label">Check-out Time:</span>
+                <span class="value">11:00 AM – Late check-out available for additional fee</span>
+            </div>
+            <div class="confirm-info-row">
+                <span class="label">Cancellation:</span>
+                <span class="value">Free cancellation up to 24 hours before check-in</span>
+            </div>
+            <div class="confirm-info-row">
+                <span class="label">ID Required:</span>
+                <span class="value">Valid photo ID and credit card required at check-in</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- bottom actions -->
+    <section class="confirm-actions">
+        <div class="confirm-actions-top">
+            <button class="btn dark">Download Confirmation</button>
+            <button class="btn outline">Share Details</button>
+        </div>
+
+        <div class="confirm-actions-bottom">
+            <button class="btn ghost" @onclick="@(() => Nav.NavigateTo("/rooms"))">
+                View All Reservations
+            </button>
+            <button class="btn ghost" @onclick="@(() => Nav.NavigateTo("/home"))">
+                Back to Home
+            </button>
+        </div>
+
+        <div class="confirm-footer-text">
+            Questions about your booking? Contact us at 1-800-HOTEL-BOOK or support@grandhotel.com
+            (placeholder).
+        </div>
+    </section>
+</div>
