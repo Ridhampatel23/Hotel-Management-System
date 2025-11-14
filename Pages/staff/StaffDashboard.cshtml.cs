@@ -1,103 +1,63 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HotelManagementSystem.Services.Hotel;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+
+// Aliases so we are 100% sure which types we mean
+using RoomDto = HotelManagementSystem.Models.Rooms.Room;
+using ResvDto = HotelManagementSystem.Models.Reservations.Reservation;
+using UserDto = HotelManagementSystem.Models.Users.User;
 
 namespace HotelManagementSystem.Pages.staff
 {
     public class StaffDashboardModel : PageModel
     {
-        private readonly HttpClient _client;
+        private readonly IHotelDataService _svc;
+        private readonly ILogger<StaffDashboardModel> _logger;
 
-        public StaffDashboardModel()
+        public StaffDashboardModel(IHotelDataService svc, ILogger<StaffDashboardModel> logger)
         {
-            _client = new HttpClient();
+            _svc = svc;
+            _logger = logger;
         }
 
-        // Data
-        public List<Room> Rooms { get; set; } = new List<Room>();
-        public List<Reservation> Reservations { get; set; } = new List<Reservation>();
-        public List<User> Users { get; set; } = new List<User>();
+        public List<RoomDto> Rooms { get; private set; } = new();
+        public List<ResvDto> Reservations { get; private set; } = new();
+        public List<UserDto> Users { get; private set; } = new();
 
-        // Stats
-        public int AvailableRooms => Rooms.FindAll(r => r.Status == "available").Count;
-        public int OccupiedRooms => Rooms.FindAll(r => r.Status == "occupied").Count;
+        public int AvailableRooms => Rooms.Count(r => r.Status == "available");
+        public int OccupiedRooms  => Rooms.Count(r => r.Status == "occupied");
         public int TotalReservations => Reservations.Count;
-        public int Reserved => Reservations.FindAll(r => r.Status == "reserved").Count;
-        public int CheckedIn => Reservations.FindAll(r => r.Status == "checkedin").Count;
-        public int CheckedOut => Reservations.FindAll(r => r.Status == "checkedout").Count;
-        public int Cancelled => Reservations.FindAll(r => r.Status == "cancelled").Count;
 
-        public async Task OnGetAsync()
-        {
-            await LoadRooms();
-            await LoadReservations();
-            await LoadUsers();
-        }
+        public string? ErrorMessage { get; private set; }
 
-        private async Task LoadRooms()
+        public async Task OnGetAsync(CancellationToken ct)
         {
-            var response = await _client.GetAsync("https://hotel-backend-o5hk.onrender.com/api/Rooms");
-            if (response.IsSuccessStatusCode)
+            var roomsTask = _svc.GetRoomsAsync(ct);
+            var resTask   = _svc.GetReservationsAsync(ct);
+            var usersTask = _svc.GetUsersAsync(ct);
+
+            await Task.WhenAll(roomsTask, resTask, usersTask);
+
+            var r1 = roomsTask.Result;
+            var r2 = resTask.Result;
+            var r3 = usersTask.Result;
+
+            Rooms        = r1 != null ? r1.ToList() : new List<RoomDto>();
+            Reservations = r2 != null ? r2.ToList() : new List<ResvDto>();
+            Users        = r3 != null ? r3.ToList() : new List<UserDto>();
+
+            if (Rooms.Count == 0 && Reservations.Count == 0 && Users.Count == 0)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                Rooms = JsonConvert.DeserializeObject<List<Room>>(json);
+                ErrorMessage = "Couldn’t load data from the server. Please try again.";
+                _logger.LogWarning("Dashboard loaded with empty datasets.");
             }
-        }
 
-        private async Task LoadReservations()
-        {
-            var response = await _client.GetAsync("https://hotel-backend-o5hk.onrender.com/api/Reservations");
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                Reservations = JsonConvert.DeserializeObject<List<Reservation>>(json);
-            }
-        }
-
-        private async Task LoadUsers()
-        {
-            var response = await _client.GetAsync("https://hotel-backend-o5hk.onrender.com/api/Users");
-            if (response.IsSuccessStatusCode)
-            {
-                var json = await response.Content.ReadAsStringAsync();
-                Users = JsonConvert.DeserializeObject<List<User>>(json);
-            }
-        }
-
-        // Models
-        public class Room
-        {
-            public int RoomId { get; set; }
-            public string RoomType { get; set; }
-            public int Price { get; set; }
-            public string Status { get; set; }
-        }
-
-        public class Reservation
-        {
-            public int ReservationId { get; set; }
-            public int UserId { get; set; }
-            public int RoomId { get; set; }
-            public string CheckInDate { get; set; }
-            public string CheckOutDate { get; set; }
-            public int TotalAmount { get; set; }
-            public string Status { get; set; }
-
-            // Placeholder for future enhancement
-            public string UserName { get; set; } = "Unknown"; 
-            public string RoomType { get; set; } = "Unknown"; 
-        }
-
-        public class User
-        {
-            public int UserId { get; set; }
-            public string FirstName { get; set; }
-            public string LastName { get; set; }
-            public string Role { get; set; }
-            public string Email { get; set; }
-            public string PhoneNumber { get; set; }
+            _logger.LogInformation("Dashboard loaded: {Rooms} rooms, {Res} reservations, {Users} users",
+                Rooms.Count, Reservations.Count, Users.Count);
         }
     }
 }

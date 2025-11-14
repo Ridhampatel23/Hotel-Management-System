@@ -1,111 +1,184 @@
-@page
+@page "/staff/dashboard"
 @model HotelManagementSystem.Pages.staff.StaffDashboardModel
 @{
     ViewData["Title"] = "Staff Dashboard";
 }
 
-<h1>Staff Dashboard</h1>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="card text-white bg-success mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Available Rooms</h5>
-                <p class="card-text">@Model.AvailableRooms</p>
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h1 class="h3 mb-0">Staff Dashboard</h1>
+
+        <div>
+            <a class="btn btn-primary me-2" href="/staff/rooms">Manage Rooms</a>
+            <a class="btn btn-warning me-2" href="/staff/reservations">Manage Reservations</a>
+            <a class="btn btn-dark" href="/staff/create-reservation">Create Reservation</a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+    }
+
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Available Rooms</div>
+                    <div class="fs-3 fw-semibold">@Model.AvailableRooms</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Occupied Rooms</div>
+                    <div class="fs-3 fw-semibold">@Model.OccupiedRooms</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-muted small">Total Reservations</div>
+                    <div class="fs-3 fw-semibold">@Model.TotalReservations</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-danger mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Occupied Rooms</h5>
-                <p class="card-text">@Model.OccupiedRooms</p>
+
+    <!-- Rooms -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white"><strong>Rooms</strong></div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Room ID</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Rooms.Count == 0)
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-4">No rooms found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var room in Model.Rooms)
+                        {
+                            <tr>
+                                <td>@room.RoomId</td>
+                                <td>@room.RoomType</td>
+                                <td>@room.Price.ToString("C")</td>
+                                <td>
+                                    @if (room.Status == "available")
+                                    {
+                                        <span class="badge text-bg-success">Available</span>
+                                    }
+                                    else if (room.Status == "occupied")
+                                    {
+                                        <span class="badge text-bg-danger">Occupied</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge text-bg-secondary">@room.Status</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card text-white bg-primary mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Total Reservations</h5>
-                <p class="card-text">@Model.TotalReservations</p>
+
+    <!-- Reservations -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white"><strong>Reservations</strong></div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reservation ID</th>
+                            <th>User ID</th>
+                            <th>Room ID</th>
+                            <th>Check-In</th>
+                            <th>Check-Out</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Reservations.Count == 0)
+                    {
+                        <tr><td colspan="7" class="text-center text-muted py-4">No reservations found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var r in Model.Reservations)
+                        {
+                            <tr>
+                                <td>@r.ReservationId</td>
+                                <td>@r.UserId</td>
+                                <td>@r.RoomId</td>
+                                <td>@r.CheckInDate.ToString("yyyy-MM-dd")</td>
+                                <td>@r.CheckOutDate.ToString("yyyy-MM-dd")</td>
+                                <td>@r.TotalAmount.ToString("C")</td>
+                                <td><span class="badge text-bg-secondary">@r.Status</span></td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white"><strong>Users</strong></div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Users.Count == 0)
+                    {
+                        <tr><td colspan="5" class="text-center text-muted py-4">No users found.</td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var u in Model.Users)
+                        {
+                            <tr>
+                                <td>@u.UserId</td>
+                                <td>@u.FirstName @u.LastName</td>
+                                <td>@u.Role</td>
+                                <td><a href="mailto:@u.Email">@u.Email</a></td>
+                                <td>@u.PhoneNumber</td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-
-<h2>Rooms</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Room ID</th>
-            <th>Type</th>
-            <th>Price</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var room in Model.Rooms)
-        {
-            <tr>
-                <td>@room.RoomId</td>
-                <td>@room.RoomType</td>
-                <td>@room.Price</td>
-                <td>@room.Status</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<h2>Reservations</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Reservation ID</th>
-            <th>User ID</th>
-            <th>Room ID</th>
-            <th>Check-In</th>
-            <th>Check-Out</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var res in Model.Reservations)
-        {
-            <tr>
-                <td>@res.ReservationId</td>
-                <td>@res.UserId</td>
-                <td>@res.RoomId</td>
-                <td>@res.CheckInDate.Substring(0,10)</td>
-                <td>@res.CheckOutDate.Substring(0,10)</td>
-                <td>@res.TotalAmount</td>
-                <td>@res.Status</td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<h2>Users</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Name</th>
-            <th>Role</th>
-            <th>Email</th>
-            <th>Phone</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>@user.UserId</td>
-                <td>@user.FirstName @user.LastName</td>
-                <td>@user.Role</td>
-                <td>@user.Email</td>
-                <td>@user.PhoneNumber</td>
-            </tr>
-        }
-    </tbody>
-</table>

@@ -5,26 +5,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System;
-
-public class Reservation
-{
-    public string Id { get; set; } = string.Empty;
-    public string FullName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string RoomType { get; set; } = string.Empty;
-    public DateTime CheckInDate { get; set; }
-    public DateTime CheckOutDate { get; set; }
-    public int NumberOfGuests { get; set; }
-}
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelManagementSystem.Pages.staff
 {
     public class EditReservationModel : PageModel
     {
-        [BindProperty]
-        public Reservation Reservation { get; set; } = new();
-
+        [BindProperty] public EditReservationVm Reservation { get; set; } = new();
         public string Message { get; set; } = string.Empty;
 
         public async Task OnGetAsync(string id)
@@ -37,7 +24,8 @@ namespace HotelManagementSystem.Pages.staff
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                Reservation = JsonConvert.DeserializeObject<Reservation>(json) ?? new();
+                var vm = JsonConvert.DeserializeObject<EditReservationVm>(json);
+                Reservation = vm ?? new EditReservationVm { Id = id };
             }
             else
             {
@@ -56,14 +44,9 @@ namespace HotelManagementSystem.Pages.staff
                 var response = await client.PutAsync($"https://hotel-backend-o5hk.onrender.com/api/Reservation/{Reservation.Id}", content);
 
                 if (response.IsSuccessStatusCode)
-                {
-                    Message = "Reservation updated successfully.";
                     return RedirectToPage("/staff/reservations");
-                }
-                else
-                {
-                    Message = "Failed to update reservation.";
-                }
+
+                Message = "Failed to update reservation.";
             }
             catch (Exception ex)
             {
@@ -72,5 +55,24 @@ namespace HotelManagementSystem.Pages.staff
 
             return Page();
         }
+    }
+
+    // Page-specific VM name avoids collision with Models.Reservations.Reservation
+    public class EditReservationVm
+    {
+        public string Id { get; set; } = string.Empty;
+
+        [Required] public string FullName { get; set; } = string.Empty;
+        [EmailAddress] public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+
+        [Required] public string RoomType { get; set; } = "Single";
+
+        [DataType(DataType.Date)] public string CheckInDate { get; set; } = DateTime.UtcNow.ToString("yyyy-MM-dd");
+        [DataType(DataType.Date)] public string CheckOutDate { get; set; } = DateTime.UtcNow.AddDays(1).ToString("yyyy-MM-dd");
+
+        [Range(1, 20)] public int NumberOfGuests { get; set; } = 1;
+
+        public string Status { get; set; } = "Pending";
     }
 }

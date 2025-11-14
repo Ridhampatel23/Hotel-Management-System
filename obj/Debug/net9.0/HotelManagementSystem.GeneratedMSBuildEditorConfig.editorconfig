@@ -36,6 +36,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/malha/OneDrive/Desktop/New folder (5)/Hotel-Management-System/Pages/staff/AddEditRoom.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcc3RhZmZcQWRkRWRpdFJvb20uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/malha/OneDrive/Desktop/New folder (5)/Hotel-Management-System/Pages/staff/CreateReservation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcc3RhZmZcQ3JlYXRlUmVzZXJ2YXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/malha/OneDrive/Desktop/New folder (5)/Hotel-Management-System/Pages/staff/Reservations.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcc3RhZmZcUmVzZXJ2YXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/malha/OneDrive/Desktop/New folder (5)/Hotel-Management-System/Pages/staff/Rooms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcc3RhZmZcUm9vbXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/malha/OneDrive/Desktop/New folder (5)/Hotel-Management-System/Pages/staff/StaffDashboard.cshtml]

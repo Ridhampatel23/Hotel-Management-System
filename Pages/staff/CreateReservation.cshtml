@@ -1,5 +1,6 @@
 @page "/staff/create-reservation"
 @model HotelManagementSystem.Pages.staff.CreateReservationModel
+@using HotelManagementSystem.Models.Rooms   <!-- ensures Room is the DTO -->
 @{
     Layout = null;
 }
@@ -36,9 +37,10 @@
                 <label asp-for="RoomType" class="form-label">Room Type</label>
                 <select asp-for="RoomType" class="form-select">
                     <option value="">Select room type</option>
-                    <option>Single</option>
-                    <option>Double</option>
-                    <option>Suite</option>
+                    @foreach (Room room in Model.AvailableRoomsList)
+                    {
+                        <option value="@room.RoomType">@room.RoomType (@room.RoomId)</option>
+                    }
                 </select>
                 <span asp-validation-for="RoomType" class="text-danger"></span>
             </div>

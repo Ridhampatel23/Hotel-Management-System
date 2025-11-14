@@ -196,16 +196,6 @@ C:\Users\malha\OneDrive\Desktop\project\Hotel-Management-System\obj\Debug\net9.0
 C:\Users\malha\OneDrive\Desktop\project\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.pdb
 C:\Users\malha\OneDrive\Desktop\project\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.genruntimeconfig.cache
 C:\Users\malha\OneDrive\Desktop\project\Hotel-Management-System\obj\Debug\net9.0\ref\HotelManagementSystem.dll
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\appsettings.Development.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\appsettings.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.staticwebassets.endpoints.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.staticwebassets.runtime.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.exe
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.deps.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.runtimeconfig.json
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.dll
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.pdb
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.csproj.AssemblyReference.cache
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\rpswa.dswa.cache.json
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.GeneratedMSBuildEditorConfig.editorconfig
@@ -216,6 +206,16 @@ C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.RazorAssemblyInfo.cache
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.RazorAssemblyInfo.cs
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.sourcelink.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\appsettings.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.staticwebassets.runtime.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.staticwebassets.endpoints.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.exe
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.deps.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.runtimeconfig.json
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.dll
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\HotelManagementSystem.pdb
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json

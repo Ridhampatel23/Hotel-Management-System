@@ -1,63 +1,77 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 using System;
+using HotelManagementSystem.Services.Hotel;
+
+// Type aliases to force the right DTOs
+using RoomDto = HotelManagementSystem.Models.Rooms.Room;
+using CreateResDto = HotelManagementSystem.Models.Reservations.CreateReservationDto;
 
 namespace HotelManagementSystem.Pages.staff
 {
     public class CreateReservationModel : PageModel
     {
-        [BindProperty] public string FullName { get; set; } = string.Empty;
-        [BindProperty] public string Email { get; set; } = string.Empty;
-        [BindProperty] public string PhoneNumber { get; set; } = string.Empty;
-        [BindProperty] public string RoomType { get; set; } = string.Empty;
-        [BindProperty] public DateTime CheckInDate { get; set; }
-        [BindProperty] public DateTime CheckOutDate { get; set; }
-        [BindProperty] public int NumberOfGuests { get; set; }
+        private readonly IHotelDataService _hotelData;
+        private readonly IReservationService _reservations;
 
-        public string Message { get; set; } = string.Empty;
-
-        public void OnGet() { }
-
-        public async Task<IActionResult> OnPostAsync()
+        public CreateReservationModel(IHotelDataService hotelData, IReservationService reservations)
         {
-            if (!ModelState.IsValid || string.IsNullOrEmpty(FullName) || string.IsNullOrEmpty(RoomType))
+            _hotelData = hotelData;
+            _reservations = reservations;
+        }
+
+        [BindProperty, Required] public string FullName { get; set; } = string.Empty;
+        [BindProperty, EmailAddress] public string? Email { get; set; }
+        [BindProperty] public string? PhoneNumber { get; set; }
+        [BindProperty, Required] public string RoomType { get; set; } = string.Empty;
+        [BindProperty, DataType(DataType.Date)] public DateTime CheckInDate { get; set; }
+        [BindProperty, DataType(DataType.Date)] public DateTime CheckOutDate { get; set; }
+        [BindProperty, Range(1, 20)] public int NumberOfGuests { get; set; } = 1;
+
+        public string Message { get; private set; } = string.Empty;
+
+        // IMPORTANT: use the DTO alias type here
+        public List<RoomDto> AvailableRoomsList { get; private set; } = new();
+
+        public async Task OnGetAsync(CancellationToken ct)
+        {
+            var allRooms = await _hotelData.GetRoomsAsync(ct);
+            AvailableRoomsList = allRooms != null
+                ? allRooms.Where(r => r.Status == "available").ToList()
+                : new List<RoomDto>();
+        }
+
+        public async Task<IActionResult> OnPostAsync(CancellationToken ct)
+        {
+            if (!ModelState.IsValid)
             {
-                Message = "Please fill in all required fields.";
+                Message = "Please fix the validation errors.";
+                await OnGetAsync(ct);
                 return Page();
             }
 
-            var client = new HttpClient();
-
-            var reservationData = new
+            var dto = new CreateResDto
             {
-                fullName = FullName,
-                email = Email,
-                phoneNumber = PhoneNumber,
-                roomType = RoomType,
-                checkInDate = CheckInDate.ToString("yyyy-MM-dd"),
-                checkOutDate = CheckOutDate.ToString("yyyy-MM-dd"),
-                numberOfGuests = NumberOfGuests
+                FullName = FullName,
+                Email = Email,
+                PhoneNumber = PhoneNumber,
+                RoomType = RoomType,
+                CheckInDate = CheckInDate,
+                CheckOutDate = CheckOutDate,
+                NumberOfGuests = NumberOfGuests
             };
 
-            var json = JsonConvert.SerializeObject(reservationData);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var ok = await _reservations.CreateAsync(dto, ct);
 
-            // 🔗 Replace this URL with your actual backend endpoint for reservations
-            var response = await client.PostAsync("https://hotel-backend-o5hk.onrender.com/api/Reservation/create", content);
+            if (ok) return RedirectToPage("/staff/reservations");
 
-            if (response.IsSuccessStatusCode)
-            {
-                Message = "Reservation created successfully!";
-                ModelState.Clear();
-            }
-            else
-            {
-                Message = "Failed to create reservation. Please try again.";
-            }
-
+            Message = "Failed to create reservation. Please try again.";
+            await OnGetAsync(ct);
             return Page();
         }
     }

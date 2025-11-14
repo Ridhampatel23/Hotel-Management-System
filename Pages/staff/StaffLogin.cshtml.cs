@@ -1,56 +1,54 @@
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
+using HotelManagementSystem.Models.Auth;
+using HotelManagementSystem.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace HotelManagementSystem.Pages.staff
 {
     public class StaffLoginModel : PageModel
     {
-        [BindProperty]
-        public string Email { get; set; } = string.Empty;
+        private readonly IAuthService _auth;
+        private readonly ILogger<StaffLoginModel> _logger;
 
-        [BindProperty]
-        public string Password { get; set; } = string.Empty;
-
-        public string ErrorMessage { get; set; } = string.Empty;
-
-        public void OnGet()
+        public StaffLoginModel(IAuthService auth, ILogger<StaffLoginModel> logger)
         {
+            _auth = auth;
+            _logger = logger;
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        [BindProperty, Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [BindProperty, Required, DataType(DataType.Password)]
+        public string Password { get; set; } = string.Empty;
+
+        public string ErrorMessage { get; private set; } = string.Empty;
+
+        public void OnGet() { }
+
+        public async Task<IActionResult> OnPostAsync(CancellationToken ct)
         {
-            if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
+            if (!ModelState.IsValid)
             {
-                ErrorMessage = "Email and password are required.";
                 return Page();
             }
 
-            var client = new HttpClient();
-            var payload = new
-            {
-                email = Email,
-                password = Password
-            };
-            var json = JsonConvert.SerializeObject(payload);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var result = await _auth.LoginAsync(
+                new StaffLoginRequest { Email = Email, Password = Password }, ct);
 
-            var response = await client.PostAsync("https://hotel-backend-o5hk.onrender.com/api/Auth/staff-login", content);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseContent); // or use ILogger
-            if (response.IsSuccessStatusCode)
+            if (result.Success)
             {
-                // Login successful — redirect to staff dashboard (you can change this later)
-                return RedirectToPage("/staff/Dashboard");
+                return RedirectToPage("/staff/StaffDashboard");
             }
-            else
-            {
-                ErrorMessage = "Invalid email or password.";
-                return Page();
-            }
+
+            ErrorMessage = result.Error ?? "Login failed.";
+            ModelState.AddModelError(string.Empty, ErrorMessage);
+            _logger.LogInformation("Login failed for {Email}", Email);
+            return Page();
         }
     }
 }
