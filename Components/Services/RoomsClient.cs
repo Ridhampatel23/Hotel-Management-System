@@ -21,7 +21,7 @@ public class RoomsClient
     public async Task<RoomDto?> GetRoomById(int id, CancellationToken ct = default)
     {
         // Details endpoint
-        return await _http.GetFromJsonAsync<RoomDto>($"/api/Rooms/{id}", ct);
+        return await _http.GetFromJsonAsync<RoomDto>($"/api/rooms/{id}", ct);
     }
 }
 

@@ -14,6 +14,8 @@ builder.Services.AddRazorComponents()
 
 // Store logged-in user info on client
 builder.Services.AddScoped<CurrentUserState>();
+builder.Services.AddScoped<BookingState>();
+
 
 // Basic HttpClient (no cookies needed)
 builder.Services.AddScoped(sp =>

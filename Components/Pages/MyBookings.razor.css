@@ -1,0 +1,11 @@
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace MyBlazorApp.Components.Pages;
+
+public class MyBookings : PageModel
+{
+    public void OnGet()
+    {
+        
+    }
+}

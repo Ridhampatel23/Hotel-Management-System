@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using MyBlazorApp.Components.Models;
 using MyBlazorApp.Components.State;
 
 namespace MyBlazorApp.Components.Services;
@@ -19,25 +18,38 @@ public class BookingClient
         int roomId,
         DateTime checkIn,
         DateTime checkOut,
-        int guests,
-        string? specialRequests,
+        decimal totalAmount,
         CancellationToken ct = default)
     {
-        if (!_userState.UserId.HasValue)
-            throw new InvalidOperationException("User is not logged in.");
+        if (!_userState.UserId.HasValue || _userState.UserId.Value <= 0)
+            throw new InvalidOperationException("User is not logged in or user id is invalid.");
 
-        var body = new BookingRequest
+        if (roomId <= 0)
+            throw new ArgumentException("Invalid roomId.");
+
+        // Server requires check-in before check-out
+        if (checkIn.Date >= checkOut.Date)
+            throw new ArgumentException("checkIn must be before checkOut.");
+
+        // IMPORTANT: camelCase names (typical ASP.NET Core JSON binding)
+        var body = new
         {
-            UserId = _userState.UserId.Value,
-            RoomId = roomId,
-            CheckIn = checkIn,
-            CheckOut = checkOut,
-            Guests = guests,
-            SpecialRequests = specialRequests
+            userId = _userState.UserId.Value,
+            roomId = roomId,
+            checkInDate = checkIn.Date,
+            checkOutDate = checkOut.Date,
+            totalAmount = totalAmount
         };
 
-        // adjust the URL to whatever your backend uses
-        var res = await _http.PostAsJsonAsync("/api/bookings", body, ct);
-        return res.IsSuccessStatusCode;
+        var res = await _http.PostAsJsonAsync("/api/reservations", body, ct);
+
+        if (!res.IsSuccessStatusCode)
+        {
+            var text = await res.Content.ReadAsStringAsync(ct);
+            Console.WriteLine($"Booking failed: {(int)res.StatusCode} {res.StatusCode}. Body: {text}");
+            return false;
+        }
+
+        return true;
     }
 }

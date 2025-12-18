@@ -1,4 +1,10 @@
 ﻿@inherits LayoutComponentBase
+@inject MyBlazorApp.Components.Services.AuthClient Auth
+@inject NavigationManager Nav
+@inject MyBlazorApp.Components.State.CurrentUserState UserState
+@inject MyBlazorApp.Components.State.BookingState BookingState
+
+
 
 <div class="page">
 
@@ -13,8 +19,16 @@
         </div>
 
         <div class="brand-right">
-            <a class="chip">Guest View</a>
-            <a class="chip outline">Switch to Staff View</a>
+            @if (UserState.IsLoggedIn)
+            {
+                <span class="chip">Hello, @UserState.DisplayName</span>
+                <button class="chip outline" @onclick="Logout">Logout</button>
+            }
+            else
+            {
+                <a class="chip" href="/login">Login</a>
+                <a class="chip outline" href="/register">Register</a>
+            }
         </div>
     </header>
 
@@ -30,3 +44,13 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private async Task Logout()
+    {
+        await Auth.LogoutAsync();
+        BookingState.ClearAll();
+        Nav.NavigateTo("/login", true);
+    }
+
+}

@@ -1,0 +1,74 @@
+﻿@page "/my-bookings"
+@rendermode InteractiveServer
+@inject MyBlazorApp.Components.State.BookingState BookingState
+@inject NavigationManager Nav
+
+<PageTitle>My Bookings · Grand Hotel</PageTitle>
+
+<div style="max-width: 960px; margin: 2rem auto; padding: 0 1rem;">
+    <h2>My Bookings</h2>
+    <p style="color:#6b7280;">This is a simple in-memory list for the demo.</p>
+
+    @if (!BookingState.HasAnyBookings)
+    {
+        <div style="margin-top: 1rem; padding: 1rem; border:1px solid #e5e7eb; border-radius: 12px; background:#f9fafb;">
+            No bookings yet.
+            <div style="margin-top: .75rem;">
+                <button class="btn primary" @onclick="@(() => Nav.NavigateTo("/rooms"))">Browse Rooms</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div style="display:flex; gap:.75rem; margin: 1rem 0;">
+            <button class="btn primary" @onclick="@(() => Nav.NavigateTo("/rooms"))">Book Another Room</button>
+            <button class="btn" @onclick="ClearAll">Clear List</button>
+        </div>
+
+        <div style="display:grid; gap: 1rem;">
+            @for (var i = 0; i < BookingState.Bookings.Count; i++)
+            {
+                var b = BookingState.Bookings[i];
+
+                <div style="border:1px solid #e5e7eb; border-radius: 16px; padding: 1rem; background:#fff;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+                        <div>
+                            <div style="font-weight:600; font-size:1.05rem;">@FormatType(b.RoomType) (Room @b.RoomId)</div>
+                            <div style="color:#6b7280; font-size:.9rem;">
+                                @b.CheckIn.ToString("MMM dd, yyyy") → @b.CheckOut.ToString("MMM dd, yyyy")
+                                · @b.Nights night@(b.Nights == 1 ? "" : "s")
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:700;">$@b.TotalAmount.ToString("0.00")</div>
+                            <div style="color:#6b7280; font-size:.85rem;">Created @b.CreatedAt.ToString("MMM dd")</div>
+                        </div>
+                    </div>
+
+                    <hr style="margin: .75rem 0;" />
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:.5rem; font-size:.9rem;">
+                        <div><span style="color:#6b7280;">Name:</span> @((b.FullName ?? "N/A"))</div>
+                        <div><span style="color:#6b7280;">Email:</span> @((b.Email ?? "N/A"))</div>
+                        <div><span style="color:#6b7280;">Guests:</span> @(b.Guests?.ToString() ?? "N/A")</div>
+                        <div><span style="color:#6b7280;">Phone:</span> @((b.PhoneNumber ?? "N/A"))</div>
+                    </div>
+
+                    <div style="margin-top: .75rem;">
+                        <button class="btn" @onclick="@(() => Remove(i))">Remove</button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private void ClearAll() => BookingState.ClearAll();
+    private void Remove(int i) => BookingState.RemoveAt(i);
+
+    private static string FormatType(string? type)
+        => string.IsNullOrWhiteSpace(type)
+            ? "Room"
+            : char.ToUpper(type[0]) + type[1..].ToLower();
+}

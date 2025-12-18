@@ -27,16 +27,19 @@ public class AuthClient
         var loginRes = await res.Content.ReadFromJsonAsync<LoginResponse>(opts, ct);
         if (loginRes is null) return false;
 
-        // store minimal user info on client
+        // IMPORTANT: do not accept default 0 (means userId wasn't read correctly)
+        if (loginRes.UserId <= 0) return false;
+
         _userState.Set(
             loginRes.UserId,
-            loginRes.FirstName,
-            loginRes.LastName,
-            loginRes.Role
+            loginRes.FirstName ?? "",
+            loginRes.LastName ?? "",
+            loginRes.Role ?? "guest"
         );
 
         return true;
     }
+
 
     public async Task<bool> RegisterAsync(RegisterRequest req, CancellationToken ct = default)
     {
