@@ -1,31 +1,38 @@
 using MyBlazorApp.Components;
 using MyBlazorApp.Components.Services;
+using MyBlazorApp.Components.State;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CHANGE THIS to your backend base URL
-var apiBase = builder.Configuration["Api:BaseUrl"] ?? "https://YOUR-BACKEND-BASE-URL";
+// Backend API base URL
+var apiBase = builder.Configuration["Api:BaseUrl"] 
+              ?? "https://YOUR-BACKEND-BASE-URL";
 
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
-// One CookieContainer per user circuit so the backend session cookie persists
-builder.Services.AddScoped(_ => new CookieContainer());
+// Store logged-in user info on client
+builder.Services.AddScoped<CurrentUserState>();
 
+// Basic HttpClient (no cookies needed)
 builder.Services.AddScoped(sp =>
 {
-    var cookies = sp.GetRequiredService<CookieContainer>();
     var handler = new HttpClientHandler
     {
-        CookieContainer = cookies,
-        UseCookies = true,
         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
     };
-    return new HttpClient(handler) { BaseAddress = new Uri(apiBase) };
+
+    return new HttpClient(handler)
+    {
+        BaseAddress = new Uri(apiBase)
+    };
 });
 
+// Services
 builder.Services.AddScoped<AuthClient>();
 builder.Services.AddScoped<RoomsClient>();
+builder.Services.AddScoped<BookingClient>();   
 
 var app = builder.Build();
 

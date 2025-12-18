@@ -3,7 +3,7 @@
 @inject NavigationManager Nav
 
 
-<PageTitle>Grand Hotel — Welcome</PageTitle>
+<PageTitle>Grand Hotel - Welcome</PageTitle>
 
 <div class="container">
 
@@ -59,7 +59,7 @@
         </div>
       </article>
     </div>
-    <div class="center"><button class="btn primary">View All Rooms</button></div>
+    <div class="center"><button class="btn primary" @onclick="GoToRooms">View All Rooms</button></div>
   </section>
 
   <section class="section">
@@ -76,7 +76,7 @@
     <div class="cta-overlay">
       <h2>Ready to Book Your Stay?</h2>
       <p>Join thousands of satisfied guests and experience luxury at its finest</p>
-      <button class="btn primary">Start Booking →</button>
+      <button class="btn primary" @onclick="GoToRooms">Start Booking →</button>
     </div>
   </section>
 </div>

@@ -15,9 +15,8 @@ public record RegisterRequest(
 
 public class LoginResponse
 {
-    // Backend sends a number here, so use long
     [JsonPropertyName("userId")]
-    public long UserId { get; set; }
+    public int UserId { get; set; }
 
     [JsonPropertyName("firstName")]
     public string? FirstName { get; set; }
