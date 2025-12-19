@@ -1,21 +1,43 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using HotelManagementSystem.Services.Hotel;
+using RoomDto = HotelManagementSystem.Models.Rooms.Room;
 
 namespace HotelManagementSystem.Pages.staff
 {
     public class RoomsModel : PageModel
     {
-        // Use the page-specific VM, not `Room`
-        public List<StaffRoomVm> Rooms { get; set; } = new()
+        private readonly IHotelDataService _hotelData;
+        private readonly ILogger<RoomsModel> _logger;
+
+        public RoomsModel(IHotelDataService hotelData, ILogger<RoomsModel> logger)
         {
-            new StaffRoomVm { Id="1", Number="101", Type="Single", Price=100, Status="Available" },
-            new StaffRoomVm { Id="2", Number="102", Type="Double", Price=150, Status="Occupied" },
-            new StaffRoomVm { Id="3", Number="103", Type="Suite",  Price=250, Status="Available" },
-        };
+            _hotelData = hotelData;
+            _logger = logger;
+        }
+
+        public List<RoomDto> Rooms { get; private set; } = new();
 
         public string Message { get; set; } = string.Empty;
 
-        public void OnGet() { }
-        public void OnPost() { }
+        public async Task OnGetAsync(CancellationToken ct)
+        {
+            var apiRooms = await _hotelData.GetRoomsAsync(ct);
+
+            if (apiRooms == null || !apiRooms.Any())
+            {
+                Message = "No rooms found.";
+                return;
+            }
+
+            Rooms = apiRooms.ToList();
+
+            _logger.LogInformation("Loaded {Count} rooms from API.", Rooms.Count);
+        }
+
     }
 }

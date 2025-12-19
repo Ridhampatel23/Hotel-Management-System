@@ -32,18 +32,18 @@
             @foreach (var room in Model.Rooms)
             {
                 <tr>
-                    <td>@room.Number</td>
-                    <td>@room.Type</td>
+                    <td>@room.RoomId</td>
+                    <td>@room.RoomType</td>
                     <td>@room.Price.ToString("C")</td>
                     <td>@room.Status</td>
                     <td class="text-center">
-                        <a href="/staff/AddEditRoom?id=@room.Id" class="btn btn-primary btn-sm">Edit</a>
-                        <form method="post" asp-page-handler="Delete" asp-route-id="@room.Id" class="d-inline">
+                        <a href="/staff/AddEditRoom?id=@room.RoomId" class="btn btn-primary btn-sm">Edit</a>
+                        <form method="post" asp-page-handler="Delete" asp-route-id="@room.RoomId" class="d-inline">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
-                        <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@room.Id" class="d-inline">
+                        <form method="post" asp-page-handler="ToggleStatus" asp-route-id="@room.RoomId" class="d-inline">
                             <button type="submit" class="btn btn-warning btn-sm">
-                                @(room.Status == "Available" ? "Mark Occupied" : "Mark Available")
+                                @(room.Status == "available" ? "Mark Occupied" : "Mark Available")
                             </button>
                         </form>
                     </td>

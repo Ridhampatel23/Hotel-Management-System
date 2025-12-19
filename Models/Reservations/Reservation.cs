@@ -7,8 +7,8 @@ namespace HotelManagementSystem.Models.Reservations
         public int ReservationId { get; init; }
         public int UserId { get; init; }
         public int RoomId { get; init; }
-        public DateTime CheckInDate { get; init; }    // OR string if your API returns strings
-        public DateTime CheckOutDate { get; init; }   // OR string
+        public DateTime CheckInDate { get; init; }   
+        public DateTime CheckOutDate { get; init; } 
         public decimal TotalAmount { get; init; }
         public string Status { get; init; } = string.Empty;
     }

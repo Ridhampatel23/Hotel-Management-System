@@ -57,7 +57,6 @@ namespace HotelManagementSystem.Pages.staff
         }
     }
 
-    // Page-specific VM name avoids collision with Models.Reservations.Reservation
     public class EditReservationVm
     {
         public string Id { get; set; } = string.Empty;

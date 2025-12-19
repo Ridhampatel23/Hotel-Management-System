@@ -11,33 +11,31 @@
 {
     <div class="alert alert-info">@Model.Message</div>
 }
-
-<table class="table table-bordered table-striped align-middle">
-    <thead class="table-dark text-center">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Room Type</th>
-            <th>Check-In</th>
-            <th>Check-Out</th>
-            <th>Guests</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var reservation in Model.Reservations)
-        {
+else
+{
+    <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark text-center">
             <tr>
-                <td>@reservation.FullName</td>
-                <td>@reservation.Email</td>
-                <td>@reservation.PhoneNumber</td>
-                <td>@reservation.RoomType</td>
-                <td>@DateTime.Parse(reservation.CheckInDate).ToShortDateString()</td>
-                <td>@DateTime.Parse(reservation.CheckOutDate).ToShortDateString()</td>
-                <td>@reservation.NumberOfGuests</td>
-                <td>@reservation.Status</td>
+                <th>Reservation #</th>
+                <th>User Id</th>
+                <th>Room</th>
+                <th>Check-In</th>
+                <th>Check-Out</th>
+                <th>Status</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var reservation in Model.Reservations)
+            {
+                <tr>
+                    <td>@reservation.ReservationId</td>
+                    <td>@reservation.UserId</td>
+                    <td>@reservation.RoomType (@reservation.RoomId)</td>
+                    <td>@reservation.CheckInDate.ToShortDateString()</td>
+                    <td>@reservation.CheckOutDate.ToShortDateString()</td>
+                    <td>@reservation.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

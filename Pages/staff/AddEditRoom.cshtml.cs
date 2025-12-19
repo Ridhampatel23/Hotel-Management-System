@@ -14,7 +14,6 @@ namespace HotelManagementSystem.Pages.staff
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
-                // TODO: Load room by id from backend/service
                 Room = new StaffRoomVm
                 {
                     Id = id,
@@ -34,13 +33,11 @@ namespace HotelManagementSystem.Pages.staff
                 return Page();
             }
 
-            // TODO: Save to backend/service
             Message = IsEdit ? "Room updated." : "Room added.";
             return RedirectToPage("/staff/Rooms");
         }
     }
 
-    // Page-specific ViewModel (does NOT collide with Models.Rooms.Room)
     public class StaffRoomVm
     {
         public string Id { get; set; } = string.Empty;

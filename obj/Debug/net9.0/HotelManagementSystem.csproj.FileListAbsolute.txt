@@ -284,8 +284,6 @@ C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\mrpknocu7f-muycvpuwrr.gz
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\nz90e2esgv-87fc7y1x7t.gz
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\dy8xwrljm9-mlv21k5csn.gz
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\dhzsggae7q-ry7hzbvaig.gz
-C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\eqzf439ypj-ry7hzbvaig.gz
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\staticwebassets.development.json
@@ -296,3 +294,5 @@ C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.pdb
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\HotelManagementSystem.genruntimeconfig.cache
 C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\ref\HotelManagementSystem.dll
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\dhzsggae7q-hz0ul68s66.gz
+C:\Users\malha\OneDrive\Desktop\New folder (5)\Hotel-Management-System\obj\Debug\net9.0\compressed\eqzf439ypj-hz0ul68s66.gz

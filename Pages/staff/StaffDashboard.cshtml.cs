@@ -6,7 +6,6 @@ using HotelManagementSystem.Services.Hotel;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-// Aliases so we are 100% sure which types we mean
 using RoomDto = HotelManagementSystem.Models.Rooms.Room;
 using ResvDto = HotelManagementSystem.Models.Reservations.Reservation;
 using UserDto = HotelManagementSystem.Models.Users.User;
